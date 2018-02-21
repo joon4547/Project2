@@ -28,6 +28,7 @@ int main(void)
 	ptr2->Sleep();
 	ptr3->Study();
 	delete ptr1; delete ptr2; delete ptr3;
+
 	return 0;
 	
 }
