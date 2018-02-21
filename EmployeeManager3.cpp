@@ -122,7 +122,7 @@ public:
 
 int main(void)
 {
-	//직원관리를 목저긍로 설께된 컨트롤 클래스의 객체생성
+	//직원관리를 목적으로 설계된 컨트롤 클래스의 객체생성
 	EmployeeHandler handler;
 
 	//정규직 등록
