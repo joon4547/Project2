@@ -4,19 +4,19 @@ using namespace std;
 class First
 {
 public:
-	void MyFunc() { cout << "FirstFunc" << endl; }
+	virtual void MyFunc() { cout << "FirstFunc" << endl; }
 };
 
 class Seconed : public First
 {
 public:
-	void MyFunc() { cout << "SeconedFunc" << endl; }
+	virtual void MyFunc() { cout << "SeconedFunc" << endl; }
 };
 
 class Third : public Seconed
 {
 public:
-	void MyFunc() { cout << "ThirdFunc" << endl; }
+	virtual void MyFunc() { cout << "ThirdFunc" << endl; }
 };
 
 int main(void)
