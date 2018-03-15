@@ -16,10 +16,10 @@ int main()
 	}
 
 	//fputs(파일에 기록할 문자열, 스트림);
-	fputs("Hello World!! \n", fp);
+	fputs("There is some data in this FILE!!!! \n", fp);
 	//stdout은 이미 이름이 정해진 표준 스트림.
 	//두번째 인자로 stdout을 전다랗면 우리 콘솔 화면에 문자열이 뜬다.
-	fputs("Hello World!! \n", stdout);
+	//fputs("Hello World!! \n", stdout);
 	
 	//여녈된 스트림을 닫기. 
 	//닫지 않는다면 스트림이 계속 살아있어서 파일은 계속 '쓰기 상태'로 남아있게 된다.
