@@ -1,4 +1,5 @@
 #include <stdio.h> 
+#include <string.h> 
 #include <stdlib.h> 
 
 struct BOOK
@@ -10,25 +11,27 @@ struct BOOK
 };
 
 typedef struct BOOK BOOK;
-char compare(char *str1, char *str2);
 int register_book(BOOK *book_list, int *nth);
 int search_book(BOOK *book_list, int total_num_book);
 int borrow_book(BOOK *book_list);
 int return_book(BOOK *book_list);
 int print_book_list(BOOK *book_list, int total_num_book);
+int retrieve_book_info(BOOK **book_list, int *total_num_book);
+char compare(char *str1, char *str2);
 
 int main()
 {
 	int user_choice; /* 유저가 선택한 메뉴 */
 	int num_total_book = 0; /* 현재 책의 수 */
 
-
 	BOOK *book_list;
+	int i;
 
 	printf("도서관의 최대 보관 장서 수를 설정해주세요 : ");
 	scanf("%d", &user_choice);
 
 	book_list = (BOOK *)malloc(sizeof(BOOK)*user_choice);
+
 	while (1)
 	{
 		printf("도서 관리 프로그램 \n");
@@ -38,8 +41,9 @@ int main()
 		printf("3. 책을 빌리기 \n");
 		printf("4. 책을 반납하기 \n");
 		printf("5. 프로그램 종료 \n");
-
-		printf("6. 책들의 내용을 book_list.txt에 출력 \n");
+		printf("6. 책들의 내용을 book_list.txt 에 출력 \n");
+		printf("7. 책들의 내용을 book_list.txt 에서 불러옴 \n");
+		printf("8. 책들의 목록을 출력 \n");
 
 		printf("당신의 선택은 : ");
 		scanf("%d", &user_choice);
@@ -60,34 +64,119 @@ int main()
 			/* 프로그램을 종료한다. */
 			break;
 		else if (user_choice == 6)
+			/* book_list.txt 에 책들의 목록을 출력한다*/
 			print_book_list(book_list, num_total_book);
+		else if (user_choice == 7)
+			/* book_list.txt 에서 책들의 목록을 가져온다*/
+			retrieve_book_info(&book_list, &num_total_book);
+		else if (user_choice == 8)
+		{
+			/* 책들의 목록을 화면에 출력한다. */
+			for (i = 0; i < num_total_book; i++)
+				printf("%s // %s // %s // ", book_list[i].book_name, book_list[i].auth_name, book_list[i].publ_name);
+				if (book_list[i].borrowed == 0)
+					printf("NO\n");
+				else
+					printf("YES\n");
+		}
 	}
 
 	free(book_list);
 	return 0;
 }
-
 int print_book_list(BOOK *book_list, int total_num_book)
 {
 	FILE *fp = fopen("book_list.txt", "w");
 	int i;
 
 	if (fp == NULL)
-	{
-		printf("출력오류\n");
-		return 0;
-	}
+		printf("출력 오류 ! \n");
+		return -1;
 
-	fprintf(fp, "책 이름/ 저자 이름/출판사/반납 유무\n");
+	fprintf(fp, "%d\n", total_num_book);
+
 	for (i = 0; i < total_num_book; i++)
 	{
-		fprintf(fp, "%s / %s / %s", book_list[i].book_name, book_list[i].auth_name, book_list[i].publ_name);
+		fprintf(fp, "%s\n%s\n%s\n", book_list[i].book_name, book_list[i].auth_name, book_list[i].publ_name);
 		if (book_list[i].borrowed == 0)
-			fprintf(fp, " / NO \n");
+			fprintf(fp, "NO\n");
 		else
-			fprintf(fp, " /YES \n");
+			fprintf(fp, "YES\n");
 	}
+
+	printf("출력 완료! \n");
 	fclose(fp);
+
+	return 0;
+}
+char compare(char *str1, char *str2)
+{
+	while (*str1)
+	{
+		if (*str1 != *str2)
+		{
+			return 0;
+		}
+
+		str1++;
+		str2++;
+	}
+
+	if (*str2 == '\0')
+		return 1;
+
+	return 0;
+}
+
+/* 포인터인 book_list 의 값을 바꿔야 하므로 더블 포인터 형태 */
+int retrieve_book_info(BOOK **book_list, int *total_num_book)
+{
+	FILE *fp = fopen("book_list.txt", "r");
+	int total_book;
+	int i;
+	char str[10];
+
+	if (fp == NULL)
+	{
+		printf("지정한 파일을 찾을 수 없습니다! \n");
+		return -1;
+	}
+
+	/* 찾았다면 전체 책의 개수를 읽어온다. */
+	fscanf(fp, "%d", &total_book);
+	(*total_num_book) = total_book;
+
+	/* 기존의 book_list 데이터를 삭제 */
+	free(*book_list);
+	/* 그리고 다시 malloc 으로 재할당 한다. */
+	(*book_list) = (BOOK *)malloc(sizeof(BOOK)*total_book);
+
+	if (*book_list == NULL)
+	{
+		printf("\n ERROR \n");
+		return -1;
+	}
+	for (i = 0; i<total_book; i++)
+	{
+		/* book_list[i]->book_name 이 아님에 유의!! */
+		fscanf(fp, "%s", (*book_list)[i].book_name);
+		fscanf(fp, "%s", (*book_list)[i].auth_name);
+		fscanf(fp, "%s", (*book_list)[i].publ_name);
+		fscanf(fp, "%s", str);
+
+		if (compare(str, "YES"))
+		{
+			(*book_list)[i].borrowed = 1;
+		}
+		else if (compare(str, "NO"))
+		{
+			(*book_list)[i].borrowed = 0;
+		}
+	}
+
+	fclose(fp);
+	return 0;
+
 }
 /* 책을 추가하는 함수*/
 int register_book(BOOK *book_list, int *nth)
@@ -159,8 +248,10 @@ int search_book(BOOK *book_list, int total_num_book)
 	else if (user_input == 3)
 	{
 		/*
+
 		i 가 0 부터 num_total_book 까지 가면서 각각의 출판사를
 		사용자가 입력한 검색어와 비교하고 있다.
+
 		*/
 		for (i = 0; i < total_num_book; i++)
 		{
@@ -174,20 +265,6 @@ int search_book(BOOK *book_list, int total_num_book)
 
 	return 0;
 }
-char compare(char *str1, char *str2)
-{
-	while (*str1)
-	{
-		if (*str1 != *str2)
-			return 0;
-		str1++;
-		str2++;
-	}
-	if (*str2 == '\0')
-		return 1;
-
-	return 0;
-}
 int borrow_book(BOOK *book_list)
 {
 	/* 사용자로 부터 책번호를 받을 변수*/
@@ -198,10 +275,14 @@ int borrow_book(BOOK *book_list)
 	scanf("%d", &book_num);
 
 	if (book_list[book_num].borrowed == 1)
+	{
 		printf("이미 대출된 책입니다! \n");
+	}
 	else
+	{
 		printf("책이 성공적으로 대출되었습니다. \n");
 		book_list[book_num].borrowed = 1;
+	}
 
 	return 0;
 }
@@ -215,10 +296,15 @@ int return_book(BOOK *book_list)
 	scanf("%d", &num_book);
 
 	if (book_list[num_book].borrowed == 0)
+	{
 		printf("이미 반납되어 있는 상태입니다\n");
+	}
 	else
+	{
 		book_list[num_book].borrowed = 0;
 		printf("성공적으로 반납되었습니다\n");
+	}
 
 	return 0;
 }
+
