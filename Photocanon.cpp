@@ -8,6 +8,8 @@ class Photon_Cannon
 	int hp, shield;
 	int coord_x, coord_y;
 	int damage;
+
+	char * name;
 public:
 	Photon_Cannon(int x, int y);
 	Photon_Cannon(const Photon_Cannon & pc); //복사 생성자
@@ -15,7 +17,7 @@ public:
 	void show_status();
 };
 
-//pc의 인스턴스 변수들에 접근해서 객체의 shieldm coord_x, coord_y등을 초기화 할 수는 있음.
+//pc의 인스턴스 변수들에 접근해서 객체의 shield, coord_x, coord_y등을 초기화 할 수는 있음.
 Photon_Cannon::Photon_Cannon(const Photon_Cannon &pc)
 {
 	cout << "복사 생성자 호출! " << endl;
