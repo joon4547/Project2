@@ -7,7 +7,7 @@ private:
 	int num;
 public:
 	AAA() : num(0) {}		//public 생성자가 정의됨. 따라서 클래스 외부에서는 이 생성자를 기반으로 객체를 생성해야 한다.
-	AAA& CreateInitObj(int n) const	//함수 내에서 , private생성자를 이용해서 AAA객체를 생성 및 반환하고 있다.
+	AAA &CreateInitObj(int n) const	//함수 내에서 , private생성자를 이용해서 AAA객체를 생성 및 반환하고 있다.
 	{
 		AAA * ptr = new AAA(n);
 		return *ptr;
