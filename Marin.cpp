@@ -15,6 +15,7 @@ public:
 	Marine();//기본 생성자
 	Marine(int x, int y, const char* marine_name);
 	Marine(int x, int y); //x, y좌표에 마린 생성
+	~Marine();
 
 	int attack();	//리턴 데미지
 	void be_attacked(int damage_earn); //입는 데미지
@@ -49,7 +50,7 @@ Marine::Marine(int x, int y)
 	coord_y = y;
 	hp = 50;
 	damage = 5;
-	is_dead - false;
+	is_dead = false;
 	name = NULL;
 }
 void Marine::move(int x, int y)
@@ -72,9 +73,19 @@ void Marine::be_attacked(int damage_earn)
 
 void Marine::show_status()
 {
-	cout << "***Marine***" << name << endl;
+	cout << "***Marine :"  << name << "***" << endl;
 	cout << "Location : ( " << coord_x << ", " << coord_y << " )" << endl;
 	cout << "HP : " << hp << endl;
+}
+
+Marine::~Marine()
+{
+	cout << name << "의 소멸자 호출!" << endl;
+	if (name != NULL)
+	{
+		//name자체가 char의 배열로 동적할당 하엿기 때문에 delete역시 delete[] name으로 써주어야 한다.
+		delete[]name;
+	}
 }
 
 int main()
@@ -83,7 +94,7 @@ int main()
 
 	marines[0] = new Marine(2, 3, "Marine 2");
 	marines[1] = new Marine(3, 5, "Marine 1");
-	
+
 	marines[0]->show_status();
 	marines[1]->show_status();
 
@@ -94,8 +105,10 @@ int main()
 	marines[0]->show_status();
 	marines[1]->show_status();
 
+	
 	delete marines[0];
 	delete marines[1];
+
 
 	/*Marine marine1(2, 3);
 	Marine marine2(3, 5);
@@ -108,6 +121,4 @@ int main()
 
 	marine1.show_status();
 	marine2.show_status();*/
-
-	return 0;
 }
