@@ -10,12 +10,13 @@ class Photon_Cannon
 	int damage;
 public:
 	Photon_Cannon(int x, int y);
-	Photon_Cannon(const Photon_Cannon & pc);
+	Photon_Cannon(const Photon_Cannon & pc); //복사 생성자
 
 	void show_status();
 };
 
-Photon_Cannon::Photon_Cannon(const Photon_Cannon & pc)
+//pc의 인스턴스 변수들에 접근해서 객체의 shieldm coord_x, coord_y등을 초기화 할 수는 있음.
+Photon_Cannon::Photon_Cannon(const Photon_Cannon &pc)
 {
 	cout << "복사 생성자 호출! " << endl;
 	hp = pc.hp;
@@ -24,6 +25,7 @@ Photon_Cannon::Photon_Cannon(const Photon_Cannon & pc)
 	coord_y = pc.coord_y;
 	damage = pc.damage;
 }
+
 Photon_Cannon::Photon_Cannon(int x, int y)
 {
 	cout << "생성자 호출!" << endl;
@@ -39,6 +41,7 @@ void Photon_Cannon::show_status()
 	cout << "Location : (" << coord_x << ", " << coord_y << ")" << endl;
 	cout << " HP : " << hp << endl;
 }
+
 int main(void)
 {
 	Photon_Cannon pc1(3, 3);
