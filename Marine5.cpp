@@ -60,10 +60,11 @@ int Marine::attack()
 //Marine& 를 리턴한다는 말이 도대체 무슨말일까? (래퍼런스란 별명이다)
 Marine& Marine::be_attacked(int damage_earn)
 {
-	hp -= damage_earn;
-	if (hp <= 0)
-		is_dead = true;
+	this -> hp -= damage_earn;
+	if (this -> hp <= 0)
+		this -> is_dead = true;
 
+	//this가 지금 이 함수를 호출한 객체를 가리키는 것. 결국 *this는 객체 자신.
 	return *this;
 }
 
