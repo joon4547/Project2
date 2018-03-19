@@ -32,6 +32,8 @@ public:
 		is_dead(false){
 		total_marine_num++;
 	}
+
+	//마린 데미지
 	Marine(int x, int y, int defalt_damage) : coord_x(x), coord_y(y), hp(50), default_damage(defalt_damage),
 		is_dead(false){
 		total_marine_num++;
