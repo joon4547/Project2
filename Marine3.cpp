@@ -4,7 +4,13 @@ using namespace std;
 
 class Marine
 {
+private:
+
 	static int total_marine_num;
+	//const static int x = 0;
+	//이걸로는 맴버변수에서 초기화 가능.
+	//모든 전역 및 static 변수들은 정의와 동시에 값이 자동으로 0 으로 초기화 되기 때문에
+	//이 경우 우리가 굳이 따로 초기화 하지 않아도 되지만 클래스 static 변수들의 경우 초기화를 한번 한다.
 
 	int hp;
 	int coord_x, coord_y;	

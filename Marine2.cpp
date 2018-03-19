@@ -2,6 +2,7 @@
 #include <string.h>
 using namespace std;
 
+/* 클래스 static 맴버변수 */
 class Marine
 {
 	int hp; // 마린 체력
