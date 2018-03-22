@@ -18,11 +18,11 @@ int main()
 	}
 
 	in.close();
-	in.open("b.txt");
+	in.open("other.txt");
 
 	if (in.is_open()) {
 		in >> s;
-		cout << "입력 받은 문자열 :: " << s << endl;
+		cout << "입력 받은 문자열 ::" << s << endl;
 	}
 	else{
 		cout << "파일을 찾을 수 없습니다." << endl;		
